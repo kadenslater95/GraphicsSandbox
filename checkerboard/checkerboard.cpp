@@ -1,3 +1,4 @@
+// Copyright 2025 Kaden Slater
 
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -55,9 +56,9 @@ void displayFunc() {
 void checkerboard(int x, int y, int l) {
     glBegin(GL_QUADS);
 
-    for(int i = 0; i < 8; i++) {
-        for(int j = 0; j < 8; j++) {
-            if((i + j) % 2 == 1) {
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if ((i + j) % 2 == 1) {
                 continue;
             }
 
@@ -65,7 +66,7 @@ void checkerboard(int x, int y, int l) {
             glVertex2i(x + l*(i+1), y - l*j);
             glVertex2i(x + l*(i+1), y - l*(j+1));
             glVertex2i(x + l*i, y - l*(j+1));
-        } 
+        }
     }
 
     glEnd();
