@@ -18,7 +18,8 @@ int viewWidth = 640;
 int viewHeight = 480;
 
 int checkerboardX = 0;
-int checkerboardY = viewHeight;
+int checkerboardY = 0;
+int checkerLength = 50;
 
 
 void init() {
@@ -57,7 +58,7 @@ int main(int argc, char** argv) {
 void displayFunc() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    checkerboard(checkerboardX, checkerboardY, 50);
+    checkerboard(checkerboardX, checkerboardY, checkerLength);
 
     glutSwapBuffers();
 
@@ -71,17 +72,17 @@ void timerFunc(int value) {
 
 
 void specialFunc(int key, int x, int y) {
-    int delta = 1;
+    int delta = checkerLength * 15/100;
 
     switch (key) {
         case GLUT_KEY_RIGHT:
-            checkerboardX += delta;
+            checkerboardX -= delta;
             break;
         case GLUT_KEY_DOWN:
             checkerboardY += delta;
             break;
         case GLUT_KEY_LEFT:
-            checkerboardX -= delta;
+            checkerboardX += delta;
             break;
         case GLUT_KEY_UP:
             checkerboardY -= delta;
@@ -95,16 +96,23 @@ void specialFunc(int key, int x, int y) {
 void checkerboard(int x, int y, int l) {
     glBegin(GL_QUADS);
 
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    // Note 2 additional rows/columns to handle the edges.
+    int numColumns = viewWidth / l + 2;
+    int numRows = viewHeight / l + 2;
+
+    int viewX = x % l;
+    int viewY = y % l;
+
+    for (int i = 0; i < numColumns; i++) {
+        for (int j = 0; j < numRows; j++) {
             if ((i + j) % 2 == 1) {
                 continue;
             }
 
-            glVertex2i(x + l*i, y - l*j);
-            glVertex2i(x + l*(i+1), y - l*j);
-            glVertex2i(x + l*(i+1), y - l*(j+1));
-            glVertex2i(x + l*i, y - l*(j+1));
+            glVertex2i(viewX + l*i, viewY + l*j);
+            glVertex2i(viewX + l*i, viewY + l*(j+1));
+            glVertex2i(viewX + l*(i+1), viewY + l*(j+1));
+            glVertex2i(viewX + l*(i+1), viewY + l*j);
         }
     }
 
